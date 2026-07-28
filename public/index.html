@@ -2307,7 +2307,7 @@
             return;
           }
           const newQty = type === 'in' ? a.qty + row.qty : a.qty - row.qty;
-          await API.updateArticle(a.id, { ...a, qty: newQty });
+          await API.updateArticleQty(a.id, { ...a, qty: newQty });
           a.qty = newQty;
           await addMovement({ articleId: a.id, articleName: a.name, type, qty: row.qty, date, reason });
         }
@@ -3132,7 +3132,7 @@
 
       // Décrémente le stock pendant la durée du prêt
       const newQty = article.qty - qty;
-      await API.updateArticle(article.id, { ...article, qty: newQty });
+      await API.updateArticleQty(article.id, { ...article, qty: newQty });
       article.qty = newQty;
       await addMovement({
         articleId: article.id, articleName: article.name,
@@ -3172,7 +3172,7 @@
       const article = State.articles.find(a => a.id === loan.articleId);
       if (article) {
         const newQty = article.qty + loan.qty;
-        await API.updateArticle(article.id, { ...article, qty: newQty });
+        await API.updateArticleQty(article.id, { ...article, qty: newQty });
         article.qty = newQty;
         await addMovement({
           articleId: article.id, articleName: article.name,
@@ -3200,7 +3200,7 @@
         const article = State.articles.find(a => a.id === loan.articleId);
         if (article) {
           const newQty = article.qty + loan.qty;
-          await API.updateArticle(article.id, { ...article, qty: newQty });
+          await API.updateArticleQty(article.id, { ...article, qty: newQty });
           article.qty = newQty;
           await addMovement({
             articleId: article.id, articleName: article.name,
