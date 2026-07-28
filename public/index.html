@@ -1208,7 +1208,10 @@
       return rows.map(rowToArticle);
     }
     async function createArticle(a) { return rowToArticle(await post('/articles', articleToRow(a))); }
-    async function updateArticle(id, a) { return rowToArticle(await patch(`/articles/${id}`, articleToRow(a))); }
+    async function updateArticle(id, a) {
+      // withImage=1 indique au serveur de ne pas supprimer le champ Image
+      return rowToArticle(await patch(`/articles/${id}?withImage=1`, articleToRow(a)));
+    }
     async function updateArticleQty(id, a) {
       const row = articleToRow(a);
       delete row['Image']; // exclut l'image pour éviter la limite Baserow
