@@ -1209,6 +1209,11 @@
     }
     async function createArticle(a) { return rowToArticle(await post('/articles', articleToRow(a))); }
     async function updateArticle(id, a) { return rowToArticle(await patch(`/articles/${id}`, articleToRow(a))); }
+    async function updateArticleQty(id, a) {
+      const row = articleToRow(a);
+      delete row['Image']; // exclut l'image pour éviter la limite Baserow
+      return rowToArticle(await patch(`/articles/${id}`, row));
+    }
     async function deleteArticle(id) { return del(`/articles/${id}`); }
 
     /* PRÊTS */
