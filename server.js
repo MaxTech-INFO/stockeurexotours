@@ -67,7 +67,13 @@ function makeRoutes(tableName) {
   // PATCH modifier un enregistrement
   app.patch(`${base}/:id`, async (req, res) => {
     try {
-      const data = await baserowReq('PATCH', `/database/rows/table/${tableId}/${req.params.id}/?user_field_names=true`, req.body);
+      let body = { ...req.body };
+      // Exclut l'image si ce n'est pas une mise à jour explicite de l'image
+      // pour éviter la limite de 1 000 000 caractères de Baserow
+      if (tableName === 'articles' && !req.query.withImage) {
+        delete body['Image'];
+      }
+      const data = await baserowReq('PATCH', `/database/rows/table/${tableId}/${req.params.id}/?user_field_names=true`, body);
       res.json(data);
     } catch(e) {
       res.status(500).json({ error: e.message });
